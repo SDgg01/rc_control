@@ -24,7 +24,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y python3-pip clang-format-10
+        sudo apt-get install -y python3-pip clang-format-12
         pip install -r requirements.txt
     - name: Code style check (Python)
       run: |
