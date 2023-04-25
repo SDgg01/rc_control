@@ -18,9 +18,19 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
+    
+    
+    - name: Clang Format Check
+      uses: mihirpathak97/clang-format-github-action@v1.0
+      with:
+        clang_format_version: '10'
+    
     - uses: RafikFarhad/clang-format-github-action@v3
       with:
           sources: "src/**/*.h,src/**/*.c,test/**/*.c"
+    
+    
+    
     - name: Install dependencies
       run: |
         sudo apt-get update
