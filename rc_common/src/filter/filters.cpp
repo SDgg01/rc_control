@@ -441,3 +441,4 @@ void OneEuroFilter<T>::clear() {
 
 template class OneEuroFilter<float>;
 template class OneEuroFilter<double>;
+#123
