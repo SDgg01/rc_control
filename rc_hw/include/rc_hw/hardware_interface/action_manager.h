@@ -44,7 +44,6 @@ public:
   void writeAction(const ros::Time& time, const ros::Duration& period);
 
   std::vector<rc_hw::Action> actions;
-  
   std::vector<rc_control::ActionData> action_data_values;
   std::vector<rc_control::ActionCmd> action_command_values;
 
