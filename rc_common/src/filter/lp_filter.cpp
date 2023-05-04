@@ -67,12 +67,12 @@ void LowPassFilter::input(double in, ros::Time time)
     delta_t_ = time - prev_time_;
     prev_time_ = time;
     if (0 == delta_t_.toSec())
-     {
+    {
       ROS_ERROR("delta_t is 0, skipping this loop. Possible overloaded cpu "
                 "at time: %f",
                 time.toSec());
       return;
-     }
+    }
   }
   else
   {
