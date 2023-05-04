@@ -42,27 +42,30 @@
 #include <ros/ros.h>
 #include <tf2_msgs/TFMessage.h>
 
-namespace rc_common {
-    class TfRtBroadcaster {
-    public:
-        TfRtBroadcaster() = default;
-        virtual void init(ros::NodeHandle &root_nh);
-        virtual void sendTransform(const geometry_msgs::TransformStamped &transform);
-        virtual void sendTransform(const std::vector<geometry_msgs::TransformStamped> &transforms);
+namespace rc_common
+{
+class TfRtBroadcaster
+{
+public:
+  TfRtBroadcaster() = default;
+  virtual void init(ros::NodeHandle& root_nh);
+  virtual void sendTransform(const geometry_msgs::TransformStamped& transform);
+  virtual void sendTransform(const std::vector<geometry_msgs::TransformStamped>& transforms);
 
-    protected:
-        ros::NodeHandle node_;
-        std::shared_ptr<realtime_tools::RealtimePublisher<tf2_msgs::TFMessage>> realtime_pub_{};
-    };
+protected:
+  ros::NodeHandle node_;
+  std::shared_ptr<realtime_tools::RealtimePublisher<tf2_msgs::TFMessage>> realtime_pub_{};
+};
 
-    class StaticTfRtBroadcaster : public TfRtBroadcaster {
-    public:
-        void init(ros::NodeHandle &root_nh) override;
-        void sendTransform(const geometry_msgs::TransformStamped &transform) override;
-        void sendTransform(const std::vector<geometry_msgs::TransformStamped> &transforms) override;
+class StaticTfRtBroadcaster : public TfRtBroadcaster
+{
+public:
+  void init(ros::NodeHandle& root_nh) override;
+  void sendTransform(const geometry_msgs::TransformStamped& transform) override;
+  void sendTransform(const std::vector<geometry_msgs::TransformStamped>& transforms) override;
 
-    private:
-        tf2_msgs::TFMessage net_message_{};
-    };
+private:
+  tf2_msgs::TFMessage net_message_{};
+};
 
-}// namespace rc_common
+}  // namespace rc_common
