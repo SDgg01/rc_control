@@ -184,56 +184,60 @@ template class DigitalLpFilter<float>;
 
 /*============================================================================*/
 
-template<typename T>
-DerivLpFilter<T>::DerivLpFilter(T w_c, T t_s) {
-    Lpf_in_prev_[0] = 0;
-    Lpf_in_prev_[1] = 0;
-    Lpf_out_prev_[0] = 0;
-    Lpf_out_prev_[1] = 0;
-    Lpf_in1_ = 0;
-    Lpf_in2_ = 0;
-    Lpf_in3_ = 0;
-    Lpf_out1_ = 0;
-    Lpf_out2_ = 0;
-    T a = 1.4142;
-    T den = 4 + 2 * a * w_c * t_s + t_s * t_s * w_c * w_c;
+template <typename T>
+DerivLpFilter<T>::DerivLpFilter(T w_c, T t_s)
+{
+  Lpf_in_prev_[0] = 0;
+  Lpf_in_prev_[1] = 0;
+  Lpf_out_prev_[0] = 0;
+  Lpf_out_prev_[1] = 0;
+  Lpf_in1_ = 0;
+  Lpf_in2_ = 0;
+  Lpf_in3_ = 0;
+  Lpf_out1_ = 0;
+  Lpf_out2_ = 0;
+  T a = 1.4142;
+  T den = 4 + 2 * a * w_c * t_s + t_s * t_s * w_c * w_c;
 
-    Lpf_in1_ = 2 * t_s * w_c * w_c / den;
-    Lpf_in2_ = 0;
-    Lpf_in3_ = -2. * t_s * w_c * w_c / den;
-    Lpf_out1_ = -1. * (-8 + t_s * t_s * w_c * w_c * 2) / den;
-    Lpf_out2_ = -1. * (4 - 2 * a * w_c * t_s + t_s * t_s * w_c * w_c) / den;
-    lpf_out_ = 0.0;
-    clear();
+  Lpf_in1_ = 2 * t_s * w_c * w_c / den;
+  Lpf_in2_ = 0;
+  Lpf_in3_ = -2. * t_s * w_c * w_c / den;
+  Lpf_out1_ = -1. * (-8 + t_s * t_s * w_c * w_c * 2) / den;
+  Lpf_out2_ = -1. * (4 - 2 * a * w_c * t_s + t_s * t_s * w_c * w_c) / den;
+  lpf_out_ = 0.0;
+  clear();
 }
 
-template<typename T>
+template <typename T>
 DerivLpFilter<T>::~DerivLpFilter() = default;
 
-template<typename T>
-void DerivLpFilter<T>::input(T lpf_in) {
-    // static int i(0);
-    lpf_out_ = Lpf_in1_ * lpf_in + Lpf_in2_ * Lpf_in_prev_[0] + Lpf_in3_ * Lpf_in_prev_[1] +// input component
-               Lpf_out1_ * Lpf_out_prev_[0] + Lpf_out2_ * Lpf_out_prev_[1];                 // output component
+template <typename T>
+void DerivLpFilter<T>::input(T lpf_in)
+{
+  // static int i(0);
+  lpf_out_ = Lpf_in1_ * lpf_in + Lpf_in2_ * Lpf_in_prev_[0] + Lpf_in3_ * Lpf_in_prev_[1] +  // input component
+             Lpf_out1_ * Lpf_out_prev_[0] + Lpf_out2_ * Lpf_out_prev_[1];                   // output component
 
-    Lpf_in_prev_[1] = Lpf_in_prev_[0];
-    Lpf_in_prev_[0] = lpf_in;
-    Lpf_out_prev_[1] = Lpf_out_prev_[0];
-    Lpf_out_prev_[0] = lpf_out_;
-    // ++i;
+  Lpf_in_prev_[1] = Lpf_in_prev_[0];
+  Lpf_in_prev_[0] = lpf_in;
+  Lpf_out_prev_[1] = Lpf_out_prev_[0];
+  Lpf_out_prev_[0] = lpf_out_;
+  // ++i;
 }
 
-template<typename T>
-T DerivLpFilter<T>::output() {
-    return lpf_out_;
+template <typename T>
+T DerivLpFilter<T>::output()
+{
+  return lpf_out_;
 }
 
-template<typename T>
-void DerivLpFilter<T>::clear() {
-    Lpf_in_prev_[1] = 0;
-    Lpf_in_prev_[0] = 0;
-    Lpf_out_prev_[1] = 0;
-    Lpf_out_prev_[0] = 0;
+template <typename T>
+void DerivLpFilter<T>::clear()
+{
+  Lpf_in_prev_[1] = 0;
+  Lpf_in_prev_[0] = 0;
+  Lpf_out_prev_[1] = 0;
+  Lpf_out_prev_[0] = 0;
 }
 
 template class DerivLpFilter<double>;
