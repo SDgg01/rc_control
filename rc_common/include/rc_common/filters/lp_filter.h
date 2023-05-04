@@ -41,7 +41,8 @@
 #include <rc_msgs/LpData.h>
 #include <realtime_tools/realtime_publisher.h>
 
-class LowPassFilter 
+class LowPassFilter
+
 {
 public:
   explicit LowPassFilter(ros::NodeHandle& nh);
