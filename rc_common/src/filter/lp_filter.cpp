@@ -105,7 +105,7 @@ void LowPassFilter::input(double in, ros::Time time)
       realtime_pub_->msg_.real = in_[0];
       realtime_pub_->msg_.filtered = out_[0];
       realtime_pub_->unlockAndPublish();
-     }
+    }
   }
 }
 
