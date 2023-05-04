@@ -77,50 +77,57 @@ template class MovingAverageFilter<float>;
 
 /*============================================================================*/
 
-template<typename T>
-ButterworthFilter<T>::ButterworthFilter(int num_sample, T dt, T cutoff_frequency) {
-    mNumSample_ = num_sample;
-    mDt_ = dt;
-    mCutoffFreq_ = cutoff_frequency;
+template <typename T>
+ButterworthFilter<T>::ButterworthFilter(int num_sample, T dt, T cutoff_frequency)
+{
+  mNumSample_ = num_sample;
+  mDt_ = dt;
+  mCutoffFreq_ = cutoff_frequency;
 
-    mpBuffer_ = new T[num_sample];
-    memset((void *) mpBuffer_, 0, sizeof(T) * num_sample);
+  mpBuffer_ = new T[num_sample];
+  memset((void*)mpBuffer_, 0, sizeof(T) * num_sample);
 
-    mCurIdx_ = 0;
+  mCurIdx_ = 0;
 }
 
-template<typename T>
-ButterworthFilter<T>::~ButterworthFilter() {
-    delete[] mpBuffer_;
+template <typename T>
+ButterworthFilter<T>::~ButterworthFilter()
+{
+  delete[] mpBuffer_;
 }
 
-template<typename T>
-void ButterworthFilter<T>::input(T input_value) {
-    int j;
-    T sqrt_2 = sqrt(2.);
-    T value = 0;
-    for (j = mNumSample_ - 2; j >= 0; j--) {
-        mpBuffer_[j + 1] = mpBuffer_[j];
-    }
+template <typename T>
+void ButterworthFilter<T>::input(T input_value)
+{
+  int j;
+  T sqrt_2 = sqrt(2.);
+  T value = 0;
+  for (j = mNumSample_ - 2; j >= 0; j--)
+  {
+    mpBuffer_[j + 1] = mpBuffer_[j];
+  }
 
-    mpBuffer_[0] = input_value;
-    for (j = 0; j < mNumSample_; j++) {
-        T t = (T) j * mDt_;
-        value += sqrt_2 / mCutoffFreq_ * mpBuffer_[j] * exp(-1. / sqrt_2 * t) * sin(mCutoffFreq_ / sqrt_2 * t) * mDt_;
-    }
-    mValue_ = value;
+  mpBuffer_[0] = input_value;
+  for (j = 0; j < mNumSample_; j++)
+  {
+    T t = (T)j * mDt_;
+    value += sqrt_2 / mCutoffFreq_ * mpBuffer_[j] * exp(-1. / sqrt_2 * t) * sin(mCutoffFreq_ / sqrt_2 * t) * mDt_;
+  }
+  mValue_ = value;
+
+template <typename T>
+T ButterworthFilter<T>::output()
+{
+  return mValue_;
 }
 
-template<typename T>
-T ButterworthFilter<T>::output() {
-    return mValue_;
-}
-
-template<typename T>
-void ButterworthFilter<T>::clear() {
-    for (int i(0); i < mNumSample_; ++i) {
-        mpBuffer_[i] = 0.0;
-    }
+template <typename T>
+void ButterworthFilter<T>::clear()
+{
+  for (int i(0); i < mNumSample_; ++i)
+  {
+    mpBuffer_[i] = 0.0;
+  }
 }
 
 template class ButterworthFilter<double>;
