@@ -352,33 +352,39 @@ template class FF02Filter<double>;
 
 /*============================================================================*/
 
-template<typename T>
-AverageFilter<T>::AverageFilter(T dt, T t_const, T limit) : dt_(dt), t_const_(t_const), limit_(limit) {
-    est_value_ = 0.;
+template <typename T>
+AverageFilter<T>::AverageFilter(T dt, T t_const, T limit) : dt_(dt), t_const_(t_const), limit_(limit)
+{
+  est_value_ = 0.;
 }
 
-template<typename T>
-AverageFilter<T>::~AverageFilter() {
-    est_value_ = 0;
+template <typename T>
+AverageFilter<T>::~AverageFilter()
+{
+  est_value_ = 0;
 }
 
-template<typename T>
-void AverageFilter<T>::clear() {
-    est_value_ = 0.;
+template <typename T>
+void AverageFilter<T>::clear()
+{
+  est_value_ = 0.;
 }
 
-template<typename T>
-void AverageFilter<T>::input(T input) {
-    T update_value = input - est_value_;
-    if (fabs(update_value) > limit_) {
-        update_value = 0.;
-    }
-    est_value_ += (dt_ / (dt_ + t_const_)) * update_value;
+template <typename T>
+void AverageFilter<T>::input(T input)
+{
+  T update_value = input - est_value_;
+  if (fabs(update_value) > limit_)
+  {
+    update_value = 0.;
+  }
+  est_value_ += (dt_ / (dt_ + t_const_)) * update_value;
 }
 
-template<typename T>
-T AverageFilter<T>::output() {
-    return est_value_;
+template <typename T>
+T AverageFilter<T>::output()
+{
+  return est_value_;
 }
 
 template class AverageFilter<float>;
@@ -386,36 +392,42 @@ template class AverageFilter<double>;
 
 /*============================================================================*/
 
-template<typename T>
-RampFilter<T>::RampFilter(T acc, T dt) {
-    acc_ = acc;
-    dt_ = dt;
-    RampFilter::clear();
+template <typename T>
+RampFilter<T>::RampFilter(T acc, T dt)
+{
+  acc_ = acc;
+  dt_ = dt;
+  RampFilter::clear();
 }
 
-template<typename T>
-void RampFilter<T>::input(T input_value) {
-    last_value_ += minAbs(input_value - last_value_, acc_ * dt_);
+template <typename T>
+void RampFilter<T>::input(T input_value)
+{
+  last_value_ += minAbs(input_value - last_value_, acc_ * dt_);
 }
 
-template<typename T>
-void RampFilter<T>::clear() {
-    last_value_ = 0.;
+template <typename T>
+void RampFilter<T>::clear()
+{
+  last_value_ = 0.;
 }
 
-template<typename T>
-void RampFilter<T>::clear(T last_value) {
-    last_value_ = last_value;
+template <typename T>
+void RampFilter<T>::clear(T last_value)
+{
+  last_value_ = last_value;
 }
 
-template<typename T>
-void RampFilter<T>::setAcc(T acc) {
-    acc_ = acc;
+template <typename T>
+void RampFilter<T>::setAcc(T acc)
+{
+  acc_ = acc;
 }
 
-template<typename T>
-T RampFilter<T>::output() {
-    return last_value_;
+template <typename T>
+T RampFilter<T>::output()
+{
+  return last_value_;
 }
 
 template class RampFilter<float>;
