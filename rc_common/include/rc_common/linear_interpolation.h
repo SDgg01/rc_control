@@ -29,7 +29,7 @@ public:
           ROS_ERROR("Please sort the point's abscissa from smallest to largest. %lf < %lf", (double)config[i][0],
                     input_vector_.back());
           return;
-         }
+        }
       input_vector_.push_back(config[i][0]);
       output_vector_.push_back(config[i][1]);
     }
