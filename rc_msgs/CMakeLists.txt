@@ -49,4 +49,3 @@ catkin_package(
         actionlib
         actionlib_msgs
 )
-
