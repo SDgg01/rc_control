@@ -43,13 +43,14 @@ MovingAverageFilter<T>::MovingAverageFilter(int num_data) : num_data_(num_data),
   memset((void*)buffer_, 0.0, sizeof(T) * num_data_);
 }
 
-template<typename T>
-void MovingAverageFilter<T>::input(T input_value) {
-    sum_ -= buffer_[idx_];
-    sum_ += input_value;
-    buffer_[idx_] = input_value;
-    ++idx_;
-    idx_ %= num_data_;
+template <typename T>
+void MovingAverageFilter<T>::input(T input_value)
+{
+  sum_ -= buffer_[idx_];
+  sum_ += input_value;
+  buffer_[idx_] = input_value;
+  ++idx_;
+  idx_ %= num_data_;
 }
 
 template<typename T>
