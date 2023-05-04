@@ -38,41 +38,47 @@
 #include "rc_common/filters/lp_filter.h"
 #include "rc_common/ros_utilities.h"
 
-LowPassFilter::LowPassFilter(ros::NodeHandle &nh) {
-    nh.param("lp_cutoff_frequency", cutoff_frequency_, -1.);
-    nh.param("lp_debug", is_debug_, false);
+LowPassFilter::LowPassFilter(ros::NodeHandle& nh)
+{
+  nh.param("lp_cutoff_frequency", cutoff_frequency_, -1.);
+  nh.param("lp_debug", is_debug_, false);
 
-    if (is_debug_)
-        realtime_pub_.reset(new realtime_tools::RealtimePublisher<rc_msgs::LpData>(nh, "lp_filter", 100));
+  if (is_debug_)
+    realtime_pub_.reset(new realtime_tools::RealtimePublisher<rc_msgs::LpData>(nh, "lp_filter", 100));
 }
 
-LowPassFilter::LowPassFilter(double cutoff_freq) {
-    is_debug_ = false;
-    cutoff_frequency_ = cutoff_freq;
+LowPassFilter::LowPassFilter(double cutoff_freq)
+{
+  is_debug_ = false;
+  cutoff_frequency_ = cutoff_freq;
 }
 
-void LowPassFilter::input(double in, ros::Time time) {
-    // My filter reference was Julius O. Smith III, Intro. to Digital Filters
-    // With Audio Applications.
-    // See https://ccrma.stanford.edu/~jos/filters/Example_Second_Order_Butterworth_Lowpass.html
-    in_[2] = in_[1];
-    in_[1] = in_[0];
-    in_[0] = in;
+void LowPassFilter::input(double in, ros::Time time)
+{
+  // My filter reference was Julius O. Smith III, Intro. to Digital Filters
+  // With Audio Applications.
+  // See https://ccrma.stanford.edu/~jos/filters/Example_Second_Order_Butterworth_Lowpass.html
+  in_[2] = in_[1];
+  in_[1] = in_[0];
+  in_[0] = in;
 
-    if (!prev_time_.isZero())// Not first time through the program
-    {
-        delta_t_ = time - prev_time_;
-        prev_time_ = time;
-        if (0 == delta_t_.toSec()) {
-            ROS_ERROR("delta_t is 0, skipping this loop. Possible overloaded cpu "
-                      "at time: %f",
-                      time.toSec());
-            return;
-        }
-    } else {
-        prev_time_ = time;
-        return;
-    }
+  if (!prev_time_.isZero())  // Not first time through the program
+  {
+    delta_t_ = time - prev_time_;
+    prev_time_ = time;
+    if (0 == delta_t_.toSec())
+     {
+      ROS_ERROR("delta_t is 0, skipping this loop. Possible overloaded cpu "
+                "at time: %f",
+                time.toSec());
+      return;
+     }
+  }
+  else
+  {
+    prev_time_ = time;
+    return;
+  }
 
     if (cutoff_frequency_ != -1 && cutoff_frequency_ > 0) {
         // Check if tan(_) is really small, could cause c = NaN
