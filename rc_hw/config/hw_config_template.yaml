@@ -41,4 +41,3 @@ rc_hw:
       serial_port: "/dev/usbDbus"
     test_action:
       serial_port: "/dev/ttyUSB0"
-
