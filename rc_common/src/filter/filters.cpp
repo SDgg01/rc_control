@@ -36,10 +36,11 @@
 #include <cmath>
 #include <cstring>
 
-template<typename T>
-MovingAverageFilter<T>::MovingAverageFilter(int num_data) : num_data_(num_data), idx_(0), sum_(0.0) {
-    buffer_ = new T[num_data_];
-    memset((void *) buffer_, 0.0, sizeof(T) * num_data_);
+template <typename T>
+MovingAverageFilter<T>::MovingAverageFilter(int num_data) : num_data_(num_data), idx_(0), sum_(0.0)
+{
+  buffer_ = new T[num_data_];
+  memset((void*)buffer_, 0.0, sizeof(T) * num_data_);
 }
 
 template<typename T>
