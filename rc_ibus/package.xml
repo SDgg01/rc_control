@@ -12,6 +12,5 @@
     <!-- depend: build, export, and execution dependency -->
     <depend>roscpp</depend>
     <depend>roslint</depend>
-
     <depend>rc_common</depend>  
 </package>
