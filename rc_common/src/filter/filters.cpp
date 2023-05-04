@@ -245,47 +245,51 @@ template class DerivLpFilter<float>;
 
 /*============================================================================*/
 
-template<typename T>
-FF01Filter<T>::FF01Filter(float t_s, float w_c) {
-    Lpf_in_prev_[0] = Lpf_in_prev_[1] = 0;
-    Lpf_out_prev_[0] = Lpf_out_prev_[1] = 0;
-    Lpf_in1_ = 0, Lpf_in2_ = 0, Lpf_in3_ = 0, Lpf_out1_ = 0, Lpf_out2_ = 0;
-    T a = 1.4142;
-    T den = 4 + 2 * a * w_c * t_s + t_s * t_s * w_c * w_c;
-    T J = 0.00008;
-    T B = 0.0002;
+template <typename T>
+FF01Filter<T>::FF01Filter(float t_s, float w_c)
+{
+  Lpf_in_prev_[0] = Lpf_in_prev_[1] = 0;
+  Lpf_out_prev_[0] = Lpf_out_prev_[1] = 0;
+  Lpf_in1_ = 0, Lpf_in2_ = 0, Lpf_in3_ = 0, Lpf_out1_ = 0, Lpf_out2_ = 0;
+  T a = 1.4142;
+  T den = 4 + 2 * a * w_c * t_s + t_s * t_s * w_c * w_c;
+  T J = 0.00008;
+  T B = 0.0002;
 
-    Lpf_in1_ = B * t_s * t_s * w_c * w_c + 2 * J * t_s * w_c * w_c;
-    Lpf_in2_ = 2 * B * t_s * t_s * w_c * w_c;
-    Lpf_in3_ = B * t_s * t_s * w_c * w_c - 2 * J * t_s * w_c * w_c;
-    Lpf_out1_ = -1. * (-8 + t_s * t_s * w_c * w_c * 2) / den;
-    Lpf_out2_ = -1. * (4 - 2 * a * w_c * t_s + t_s * t_s * w_c * w_c) / den;
+  Lpf_in1_ = B * t_s * t_s * w_c * w_c + 2 * J * t_s * w_c * w_c;
+  Lpf_in2_ = 2 * B * t_s * t_s * w_c * w_c;
+  Lpf_in3_ = B * t_s * t_s * w_c * w_c - 2 * J * t_s * w_c * w_c;
+  Lpf_out1_ = -1. * (-8 + t_s * t_s * w_c * w_c * 2) / den;
+  Lpf_out2_ = -1. * (4 - 2 * a * w_c * t_s + t_s * t_s * w_c * w_c) / den;
 }
 
-template<typename T>
+template <typename T>
 FF01Filter<T>::~FF01Filter() = default;
 
-template<typename T>
-void FF01Filter<T>::input(T lpf_in) {
-    lpf_out_ = Lpf_in1_ * lpf_in + Lpf_in2_ * Lpf_in_prev_[0] + Lpf_in3_ * Lpf_in_prev_[1] +// input component
-               Lpf_out1_ * Lpf_out_prev_[0] + Lpf_out2_ * Lpf_out_prev_[1];                 // output component
-    Lpf_in_prev_[1] = Lpf_in_prev_[0];
-    Lpf_in_prev_[0] = lpf_in;
-    Lpf_out_prev_[1] = Lpf_out_prev_[0];
-    Lpf_out_prev_[0] = lpf_out_;
+template <typename T>
+void FF01Filter<T>::input(T lpf_in)
+{
+  lpf_out_ = Lpf_in1_ * lpf_in + Lpf_in2_ * Lpf_in_prev_[0] + Lpf_in3_ * Lpf_in_prev_[1] +  // input component
+             Lpf_out1_ * Lpf_out_prev_[0] + Lpf_out2_ * Lpf_out_prev_[1];                   // output component
+  Lpf_in_prev_[1] = Lpf_in_prev_[0];
+  Lpf_in_prev_[0] = lpf_in;
+  Lpf_out_prev_[1] = Lpf_out_prev_[0];
+  Lpf_out_prev_[0] = lpf_out_;
 }
 
-template<typename T>
-T FF01Filter<T>::output() {
-    return lpf_out_;
+template <typename T>
+T FF01Filter<T>::output()
+{
+  return lpf_out_;
 }
 
-template<typename T>
-void FF01Filter<T>::clear() {
-    Lpf_in_prev_[1] = 0;
-    Lpf_in_prev_[0] = 0;
-    Lpf_out_prev_[1] = 0;
-    Lpf_out_prev_[0] = 0;
+template <typename T>
+void FF01Filter<T>::clear()
+{
+  Lpf_in_prev_[1] = 0;
+  Lpf_in_prev_[0] = 0;
+  Lpf_out_prev_[1] = 0;
+  Lpf_out_prev_[0] = 0;
 }
 
 template class FF01Filter<float>;
@@ -293,9 +297,10 @@ template class FF01Filter<double>;
 
 /*============================================================================*/
 
-template<typename T>
-FF02Filter<T>::FF02Filter(float t_s, float w_c) {
-    T J = 0.003216;
+template <typename T>
+FF02Filter<T>::FF02Filter(float t_s, float w_c)
+{
+  T J = 0.003216;
 
     Lpf_in_prev_[0] = Lpf_in_prev_[1] = 0;
     Lpf_out_prev_[0] = Lpf_out_prev_[1] = 0;
