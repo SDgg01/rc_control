@@ -135,44 +135,48 @@ template class ButterworthFilter<float>;
 
 /*============================================================================*/
 
-template<typename T>
-DigitalLpFilter<T>::DigitalLpFilter(T w_c, T t_s) {
-    Lpf_in_prev_[0] = Lpf_in_prev_[1] = 0;
-    Lpf_out_prev_[0] = Lpf_out_prev_[1] = 0;
-    Lpf_in1_ = 0, Lpf_in2_ = 0, Lpf_in3_ = 0, Lpf_out1_ = 0, Lpf_out2_ = 0;
-    float den = 2500 * t_s * t_s * w_c * w_c + 7071 * t_s * w_c + 10000;
+template <typename T>
+DigitalLpFilter<T>::DigitalLpFilter(T w_c, T t_s)
+{
+  Lpf_in_prev_[0] = Lpf_in_prev_[1] = 0;
+  Lpf_out_prev_[0] = Lpf_out_prev_[1] = 0;
+  Lpf_in1_ = 0, Lpf_in2_ = 0, Lpf_in3_ = 0, Lpf_out1_ = 0, Lpf_out2_ = 0;
+  float den = 2500 * t_s * t_s * w_c * w_c + 7071 * t_s * w_c + 10000;
 
-    Lpf_in1_ = 2500 * t_s * t_s * w_c * w_c / den;
-    Lpf_in2_ = 5000 * t_s * t_s * w_c * w_c / den;
-    Lpf_in3_ = 2500 * t_s * t_s * w_c * w_c / den;
-    Lpf_out1_ = -(5000 * t_s * t_s * w_c * w_c - 20000) / den;
-    Lpf_out2_ = -(2500 * t_s * t_s * w_c * w_c - 7071 * t_s * w_c + 10000) / den;
+  Lpf_in1_ = 2500 * t_s * t_s * w_c * w_c / den;
+  Lpf_in2_ = 5000 * t_s * t_s * w_c * w_c / den;
+  Lpf_in3_ = 2500 * t_s * t_s * w_c * w_c / den;
+  Lpf_out1_ = -(5000 * t_s * t_s * w_c * w_c - 20000) / den;
+  Lpf_out2_ = -(2500 * t_s * t_s * w_c * w_c - 7071 * t_s * w_c + 10000) / den;
 }
 
-template<typename T>
+template <typename T>
 DigitalLpFilter<T>::~DigitalLpFilter() = default;
 
-template<typename T>
-void DigitalLpFilter<T>::input(T lpf_in) {
-    lpf_out_ = Lpf_in1_ * lpf_in + Lpf_in2_ * Lpf_in_prev_[0] + Lpf_in3_ * Lpf_in_prev_[1] +// input component
-               Lpf_out1_ * Lpf_out_prev_[0] + Lpf_out2_ * Lpf_out_prev_[1];                 // output component
-    Lpf_in_prev_[1] = Lpf_in_prev_[0];
-    Lpf_in_prev_[0] = lpf_in;
-    Lpf_out_prev_[1] = Lpf_out_prev_[0];
-    Lpf_out_prev_[0] = lpf_out_;
+template <typename T>
+void DigitalLpFilter<T>::input(T lpf_in)
+{
+  lpf_out_ = Lpf_in1_ * lpf_in + Lpf_in2_ * Lpf_in_prev_[0] + Lpf_in3_ * Lpf_in_prev_[1] +  // input component
+             Lpf_out1_ * Lpf_out_prev_[0] + Lpf_out2_ * Lpf_out_prev_[1];                   // output component
+  Lpf_in_prev_[1] = Lpf_in_prev_[0];
+  Lpf_in_prev_[0] = lpf_in;
+  Lpf_out_prev_[1] = Lpf_out_prev_[0];
+  Lpf_out_prev_[0] = lpf_out_;
 }
 
-template<typename T>
-T DigitalLpFilter<T>::output() {
-    return lpf_out_;
+template <typename T>
+T DigitalLpFilter<T>::output()
+{
+  return lpf_out_;
 }
 
-template<typename T>
-void DigitalLpFilter<T>::clear() {
-    Lpf_in_prev_[1] = 0;
-    Lpf_in_prev_[0] = 0;
-    Lpf_out_prev_[1] = 0;
-    Lpf_out_prev_[0] = 0;
+template <typename T>
+void DigitalLpFilter<T>::clear()
+{
+  Lpf_in_prev_[1] = 0;
+  Lpf_in_prev_[0] = 0;
+  Lpf_out_prev_[1] = 0;
+  Lpf_out_prev_[0] = 0;
 }
 
 template class DigitalLpFilter<double>;
